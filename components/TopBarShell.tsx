@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { AppHeader, ProfileMenu } from "@fidelity-imagina/ui";
 
 export interface TopBarViewer {
@@ -10,6 +11,8 @@ export interface TopBarViewer {
 }
 
 export function TopBarShell({ viewer, signOutUrl }: { viewer: TopBarViewer | null; signOutUrl: string }) {
+  const router = useRouter();
+  const path = usePathname();
   return (
     <AppHeader
       name="AVA"
@@ -21,6 +24,10 @@ export function TopBarShell({ viewer, signOutUrl }: { viewer: TopBarViewer | nul
             role={viewer.role ?? "Staff"}
             image={viewer.photo}
             onSignOut={() => window.location.assign(signOutUrl)}
+            items={[
+              { label: "Meet AVA", onClick: () => router.push("/intro"), current: path === "/intro" },
+              { label: "AVA's brain", onClick: () => router.push("/brain"), current: path === "/brain" },
+            ]}
           />
         )
       }
