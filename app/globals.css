@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Sohne';
+  src: url('/fonts/Sohne-Buch.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SohneLeicht';
+  src: url('/fonts/Sohne-Leicht.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SohneBreit';
+  src: url('/fonts/SohneBreit-Buch.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Point the shared UI kit at the Söhne files this app already loads. */
+  --atl-sans: 'Sohne', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --atl-wide: 'SohneBreit', 'Archivo', sans-serif;
+
+  /* The app's older variable names, mapped onto the kit's tokens so every screen follows the kit. */
+  --bg-base: var(--atl-black);
+  --bg-surface: var(--atl-surface);
+  --bg-raised: rgb(232 227 222 / 0.06);
+  --bg-border: var(--atl-rule);
+  --text-primary: var(--atl-fg);
+  --text-secondary: var(--atl-fg-2);
+  --text-tertiary: var(--atl-fg-3);
+  --accent: var(--atl-fg);
+  --accent-subtle: rgb(232 227 222 / 0.08);
+  --status-active: var(--atl-sage);
+  --status-pending: var(--atl-yellow);
+  --status-error: var(--atl-yellow);
+}
+
+* { box-sizing: border-box; }
+
+html { background-color: var(--atl-black); height: 100%; }
+
+body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--atl-black);
+  color: var(--atl-fg);
+  font-family: var(--atl-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection { background: var(--atl-fg); color: var(--atl-black); }
+
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 1px solid var(--atl-fg); outline-offset: 2px; }
+
+.skip-link { position: absolute; left: 16px; top: -48px; z-index: 10; padding: 8px 12px; background: var(--atl-surface); border: 1px solid var(--atl-rule); border-radius: var(--atl-radius); }
+.skip-link:focus { top: 8px; }
+
+/* Button text is Söhne Breit in caps. The published kit (up to 0.5.0) lets `.atl-btn { font-family: inherit }` override
+   that; drop this once an app is on a kit release with the fix. */
+.atl-btn { font-family: var(--atl-wide); }
+/* Icon-only buttons carry no text. Links styled as buttons need the same face, size and tracking. */
+a.atl-btn { text-decoration: none; }
+
+/* ---------- Frame ---------- */
+.app-frame { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
+.app-content { flex: 1; min-height: 0; overflow-y: auto; }
+.page { max-width: 960px; margin: 0 auto; padding: 40px 24px 96px; }
+.page--narrow { max-width: 720px; }
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 32px; }
+.page-title { margin: 0; font-family: var(--atl-wide); font-weight: 400; font-size: 24px; line-height: 1.2; }
+.page-lede { margin: 8px 0 0; color: var(--atl-fg-2); max-width: 60ch; }
+.page-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.back { display: inline-flex; margin-bottom: 20px; color: var(--atl-fg-3); font-size: 13px; transition: color 150ms ease; }
+.back:hover { color: var(--atl-fg); }
+.section-label { margin: 40px 0 16px; font-family: var(--atl-wide); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--atl-fg-3); }
+.mono { font-family: var(--atl-mono); font-size: 12px; color: var(--atl-fg-3); }
+.panel { border: 1px solid var(--atl-rule); border-radius: var(--atl-radius); background: var(--atl-surface); padding: 24px; }
+.panel--empty { color: var(--atl-fg-3); text-align: center; padding: 40px 24px; }
+/* Callout: the kit's toast pattern, inline (see components/Callout.tsx). */
+.callout { position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; padding: 16px 16px 16px 19px; background: var(--atl-black); color: var(--atl-fg); border: 1px solid var(--atl-rule); border-radius: var(--atl-radius); }
+.callout::before { content: ""; position: absolute; top: -1px; bottom: -1px; left: -1px; width: 3px; background: var(--atl-fg-3); }
+.callout--success::before { background: var(--atl-sage); }
+.callout--warning::before { background: var(--atl-yellow); }
+.callout-label { font-family: var(--atl-wide); font-stretch: 125%; font-weight: 500; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--atl-fg-2); }
+.callout-msg { margin: 0; font-size: 14px; line-height: 1.5; }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* ---------- Top bar ---------- */
+.topbar-badge { padding: 2px 8px; border: 1px solid var(--atl-rule); border-radius: var(--atl-radius); font-size: 11px; color: var(--atl-fg-2); }
+.spacer { flex: 1; }
+.avatar { flex: none; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 50%; background: var(--bg-raised); border: 1px solid var(--atl-rule); color: var(--atl-fg-2); font-family: var(--atl-sans); font-size: 12px; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar--lg { width: 44px; height: 44px; font-size: 14px; }
+@media (max-width: 640px) { .topbar { gap: 12px; padding: 8px 16px; } .page { padding: 24px 16px 80px; } }

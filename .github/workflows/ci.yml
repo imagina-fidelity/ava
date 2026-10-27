@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+      # .npmrc reads ${NPM_TOKEN} to pull @fidelity-imagina/* from GitHub Packages
+      - run: npm ci
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # Next 16 generates global types (e.g. RouteContext) into .next/types
+      - name: Generate Next.js types
+        run: npx next typegen
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Lint
+        run: npm run lint --if-present
